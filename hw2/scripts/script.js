@@ -1,18 +1,38 @@
-window.onload = function() {          // Wait for DOM to load.
-  var p = document.getElementById("my-p");
-  console.log(p);                     // Returns just one element
-  p.style.color = "red";
-  p.style.backgroundColor = "blue";
-  p.innerHTML = "Something funky!!"
+/*
+ * Rafi Khan | 10.2.2013
+ * HackYale Front-end Development
+ */
 
-  var lis = document.getElementsByTagName("li"); // An array
+// window.onload is a function that's called by the browser when
+// the window loads. We wrap all our javascript in it—the reasons
+// for that will be explained next class.
+window.onload = function() {
+  console.log("I'm ready!"); // Open the developer console to see this statement.
+  // To open the developer's console: view -> developer -> console
+  /*
+   * Important concepts
+   * 
+   * document: Your entry point into the DOM (all of your HTML)
+   * document.getElementsByTagName: (select elements by tag name)
+   * document.getElementsByClassName: (select elements by class)
+   * document.getElementById: (select *a single* element by ID)
+   * Note that the first two functions return arrays and the last just
+   * returns an element.
+   */
+   // Examples (check index.html first)
+   var paras = document.getElementsByTagName("p");   // An array of length 6
+   var pic = document.getElementsByClassName("pic"); // An array of length 1
+   var par3 = document.getElementById("par3");       // A single p element
+   console.log("paras", paras);
+   console.log("pic", pic);
+   console.log("par3", par3);
 
-  for(var index=0; index<lis.length; index++) {
-    var li = lis[index];
-    var color = Math.floor((256.0/lis.length) * index);
-    li.style.backgroundColor = "rgb("+color+","+color+","+color+")";
-  }
-
-  var response = prompt("Red, green or blue?");
-  console.log(response);
-};                                    // Don't forget semicolon!
+   var colors = ["blue", "pink", "green", "yellow"];
+   for (var i=0; i<paras.length; i++) {
+    // What does the code below do?
+    // Hint: refresh index.html several times.
+    var index = Math.floor(Math.random()*colors.length);
+    paras[i].style.color = colors[index];
+    console.log(paras[i].style);
+   }
+};
