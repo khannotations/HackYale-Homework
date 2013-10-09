@@ -13,6 +13,6 @@ window.onload = function() {          // Wait for DOM to load.
     li.style.backgroundColor = "rgb("+color+","+color+","+color+")";
   }
 
-  var response = prompt("Red, green or blue?");
-  console.log(response);
+  // var response = prompt("Red, green or blue?");
+  // console.log(response);
 };                                    // Don't forget semicolon!

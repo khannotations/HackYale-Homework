@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Yay javascript let's go</title>
+  <link rel="stylesheet" href="./stylesheets/style.css">
+  <!-- Note: You must include the http: or else this won't work
+  on localhost! -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="./scripts/script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="posts">
+      <div class="blog-post">
+        <h2 class="title">
+          A sample blog post
+        </h2>
+        <p class="author">
+          Rafi Khan
+        </p>
+        <div class="content">
+          Some awesome content here!
+        </div>
+      </div>
+    </div>
+    <div class="add-more">
+      <h3>Add another post!</h3>
+      <input type="text" id="new-title" class="input" placeholder="Title">
+      <br>
+      <label>Author: </label>
+      <select id="new-author" class="input">
+        <option value="Rafi Khan">Rafi Khan</option>
+        <option value="Poseidon">Poseidon</option>
+        <option value="John Resig">John Resig, jQuery founder</option>
+        <option value="Other">Other</option>
+      </select>
+      <br>
+      <textarea id="new-content" class="input" placeholder="Content"></textarea>
+      <div id="submit">Submit</div>
+    </div>
+  </div>
+</body>
+</html>
