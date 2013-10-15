@@ -1,13 +1,7 @@
 $(document).ready(function() {
-  function updateDotPosition(x, y) {
-    $("#dot").css({top: y, left: x});
-  }
-  var x = 10;
-  var y = 10;
-  var speed = 2;
-  updateDotPosition(x, y);
-  $(window).keydown(function(e) {
-    switch(e.which) {
+  // dir is 37 for left, 38 for up, 39 for right, 40 for down.
+  function updateDotPosition() {
+    switch(dir) {
       case 37:
         x-=speed;
         break;
@@ -20,21 +14,34 @@ $(document).ready(function() {
       case 40:
         y+=speed;
         break;
+      // Alternatively:
+      // if (e.which === 37) {
+      //   x-=speed;
+      // } else if (e.which === 38) {
+      //   y-=speed;
+      // } else if (e.which === 39) {
+      //   x+=speed;
+      // } else if (e.which === 40) {
+      //   y+=speed;
+      // }
     }
-    // Alternatively:
-    // if (e.which === 37) {
-    //   x-=speed;
-    // } else if (e.which === 38) {
-    //   y-=speed;
-    // } else if (e.which === 39) {
-    //   x+=speed;
-    // } else if (e.which === 40) {
-    //   y+=speed;
-    // }
-    updateDotPosition(x,y);
+    $("#dot").css({top: y, left: x});
+  }
+  var x = 30;
+  var y = 30;
+  var dir = 39; // Right
+  var speed = 2;
+  updateDotPosition(x, y);
+  $(window).keydown(function(e) {
+    dir = e.which;
+    updateDotPosition();
   });
 
-  $("#change-speed").click(function() {
-    speed = parseInt(prompt("What's the new speed? (1-10)"));
-  });
+  // $("#change-speed").click(function() {
+  //   speed = parseInt(prompt("What's the new speed? (1-10)"));
+  // });
+
+  // setInterval(function() {
+  //   updateDotPosition();
+  // }, 100);
 });
