@@ -1,6 +1,7 @@
 /*
  * Javascript for Front-end Development HW 3: staring jQuery.
  * By Rafi Khan, October 9, 2013
+ * https://github.com/rafi-khan/hackyale-homework
  */
 $(document).ready(function() {
   /*
@@ -35,7 +36,7 @@ $(document).ready(function() {
     var author = $("#new-author").val();
     var content = $("#new-content").val();
     createBlogPost(title, author, content);
-    console.log(title, author, content);
+    // console.log(title, author, content);
     $(".input").val(""); // What does this line do? Leave it out of your code
                          // and see what happens. In particular, how is this
                          // use of val() different/same from a few lines above?
