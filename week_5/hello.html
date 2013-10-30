@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fortunes!</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://alexreinking.com/socket.io.js"></script>
+	<script type="text/javascript">
+	var socket = io.connect('http://alexreinking.com:5349');
+
+	window.onload = function () {
+		socket.on('hello', function(data) {
+			$("#fortune").text(data.message);
+		});
+
+		$("#newFortune").click(function () {
+			socket.emit('hello');
+		});
+
+		socket.on('error', function (err) {
+			console.log(err);
+		});
+	}
+	</script>
+</head>
+
+<body>
+	<h1>Enjoy your fortune!</h1>
+	<div id="fortune">No fortune yet...</div>
+	<button id="newFortune">Get a new fortune!</button>
+</body>
+</html>
