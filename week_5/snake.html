@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+    var snake = [];
+    var food  = null;
+    var LEFT = 37; var UP = 38; var RIGHT = 39; var DOWN = 40;
+    var direction = RIGHT;
+    var updateInterval = null;
+
+    function createBox(left, top) {
+        var $cell = $('<div class="cell">').appendTo('body');
+        $cell.css('left', left);
+        $cell.css('top', top);
+        return $cell;
+    }
+
+    function lose() {
+        direction = null;
+        clearInterval(updateInterval);
+        alert('You lose. Refresh the page to play again.');
+    }
+
+    function overlapping($a, $b) { // infinity norm
+        var dx = Math.abs($a.offset().left - $b.offset().left);
+        var dy = Math.abs($a.offset().top  - $b.offset().top);
+        return Math.max(dx, dy) < 20;
+    }
+
+    function moveFood() {
+        if(!food)
+            food = $('<div class="cell food">').appendTo('body');
+        var randomX = Math.floor(Math.random() * ($(document).width()-10)  / 20) * 20;
+        var randomY = Math.floor(Math.random() * ($(document).height()-10) / 20) * 20;
+        $(food).css("left", randomX);
+        $(food).css("top", randomY);
+        for(var i in snake)
+            if(overlapping(food, snake[i]))
+                moveFood();
+    }
+
+    function updatePosition() {
+        var tail = snake.pop();
+        var head = (snake[0]) ? snake[0] : tail;
+
+        $(tail).css("left", head.css("left"));
+        $(tail).css("top", head.css("top"));
+
+        if(direction === LEFT && $(tail).offset().left - 20 >= 0) {
+            $(tail).css("left", "-=20");
+        } else if(direction == UP && $(tail).offset().top - 20 >= 0) {
+            $(tail).css("top",  "-=20");
+        } else if(direction === RIGHT && $(tail).offset().left + 20 < $(document).width() - 20) {
+            $(tail).css("left", "+=20");
+        } else if(direction === DOWN && $(tail).offset().top + 20 < $(document).height() - 20) {
+            $(tail).css("top",  "+=20");
+        } else {
+            lose();
+        }
+
+        for(var i in snake)
+            if(overlapping(tail, snake[i]))
+                lose();
+
+        snake.unshift(tail);
+        if(overlapping(tail, food)) {
+            snake.push(createBox(tail.css('left'), tail.css('top')));
+            moveFood();
+        }
+    }
+
+    $(function() {
+        snake.unshift(createBox(0, 0));
+        moveFood();
+
+        updateInterval = setInterval(updatePosition, 100);
+
+        $(document).keydown(function (e) {
+            if(e.which >= 37 && e.which <= 40) {
+                if(e.which === UP && direction === DOWN
+                    || e.which === DOWN && direction === UP
+                    || e.which === LEFT && direction === RIGHT
+                    || e.which === RIGHT && direction === LEFT)
+                    return;
+                direction = e.which;
+            }
+        });
+    });
+
+    </script>
+    <style type="text/css">
+    body {
+        background-color: black;
+    }
+    .cell {
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+    }
+    .food {
+        background-color: green;
+    }
+    </style>
+</head>
+<body>
+
+</body>
+</html>
+

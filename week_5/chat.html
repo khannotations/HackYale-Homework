@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://alexreinking.com/socket.io.js"></script>
+    <script type="text/javascript">
+    var socket = io.connect('http://alexreinking.com:5349');
+    var username = null;
+    var ENTER = 13;
+
+    $(function () {
+        $("#login").click(function () {
+            username = $("#screenName").val();
+            socket.emit('login', { username: username });
+        });
+
+        $("#screenName").keyup(function(event){
+            if(event.keyCode == ENTER){
+                $("#login").click();
+            }
+        });
+
+        $("#message").keyup(function(event){
+            if(event.keyCode == ENTER){
+                $("#send").click();
+            }
+        });
+
+        function addMessage(user, text) {
+            $('<div class="message">').html("<b>" + user + ":</b>" + text).appendTo('#messages');
+            $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 250);
+        }
+
+        socket.on('success', function() {
+            console.log('Hooray!');
+            $("#loginBox").hide();
+            $("#chatBox").show();
+
+            socket.on('message', function (data) {
+                var newMsg = $('<div/>').text(data.message).html();
+                addMessage(data.user, newMsg);
+            });
+
+            $('#send').click(function() {
+                var newMsg = $('#message').val();
+                $('#message').val("");
+                addMessage(username, newMsg);
+                socket.emit('send', { message: newMsg });
+            });
+        });
+
+        socket.on('error', function (data) {
+            username = null;
+            console.log(data.message);
+        });
+    });
+    </script>
+    <style type="text/css">
+    #chatBox {
+        display: none;
+        width: 500px;
+    }
+    #messages {
+        height: 300px;
+        overflow-y: scroll;
+    }
+    .message {
+        border-bottom: 1px dashed black;
+        padding: 20px;
+        word-wrap: break-word;
+    }
+    .message b {
+        margin-right: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div id="loginBox">
+        <input name="screenName" id="screenName" type="text" placeholder="xXxTrueLove3xXx">
+        <button id="login">Log In</button>
+    </div>
+    <div id="chatBox">
+        <div id="messages">
+        </div>
+        <div id="inputBox">
+            <input name="message" id="message" type="text" placeholder="Enter a message...">
+            <button id="send">Send</button>
+        </div>
+    </div>
+</body>
+</html>
+
+

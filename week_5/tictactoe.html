@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tic-Tac-Toe</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://alexreinking.com/socket.io.js"></script>
+<script type="text/javascript">
+String.prototype.replaceAt = function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+}
+
+var socket = io.connect('http://alexreinking.com:5349');
+var board  = "         ";
+var player = 'X';
+var opponent = 'O';
+
+socket.on('move', function (data) {
+    board = data.board;
+    renderBoard();
+});
+
+socket.on('gameover', function(data) {
+    alert(data.winner + ": " + data.message);
+    board = "         ";
+});
+
+function renderBoard() {
+    for(var i = 0; i < 9; i++) {
+        $("#cell" + i).html(board[i]);
+    }
+}
+
+$(function () {
+    $(".cell").click(function(e) {
+        var cellClicked = e.target.id[e.target.id.length-1];
+        board = board.replaceAt(Number(cellClicked), player);
+        renderBoard();
+        socket.emit('tictactoe', { board: board, cpu: opponent });
+    });
+});
+</script>
+<style type="text/css">
+.board {
+    width: 306px;
+    height: 306px;
+    border: 1px solid black;
+}
+
+.cell {
+    display: block;
+    float: left;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+    font-family: sans-serif;
+    font-size: 70px;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease-in-out;
+}
+
+.cell:hover {
+    background-color: #CCCCCC;
+}
+</style>
+</head>
+
+<body>
+<h1>Tic-Tac-Toe</h1>
+<h2>Play against the computer!</h2>
+<div class="board">
+    <span class="cell" id="cell0"></span>
+    <span class="cell" id="cell1"></span>
+    <span class="cell" id="cell2"></span>
+    <span class="cell" id="cell3"></span>
+    <span class="cell" id="cell4"></span>
+    <span class="cell" id="cell5"></span>
+    <span class="cell" id="cell6"></span>
+    <span class="cell" id="cell7"></span>
+    <span class="cell" id="cell8"></span>
+</div>
+</body>
+</html>
+
